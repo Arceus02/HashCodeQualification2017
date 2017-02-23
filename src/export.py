@@ -3,12 +3,14 @@ def get_path(name):
 
 def export(name, videos_by_servers):
     output = ""
-    output += str(len(videos_by_servers)) + "\n"
+    count = 0
     for i_cache, videos in enumerate(videos_by_servers):
         if len(videos) > 0:
             output += str(i_cache) + " "
             output += " ".join(map(str,videos))
             output += "\n"
+            count += 1
+    output = str(count) + "\n" + output
     with open(get_path(name), 'w') as file:
         file.write(output)
 

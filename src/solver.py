@@ -32,7 +32,7 @@ def get_endpoints_by_server(server_id, data):
         endpoint = endpoints[endpoint_id]
         servers_list = endpoint[1]
         for current_server_id in range(len(servers_list)):
-            if current_server_id == server_id:
+            if (current_server_id == server_id and server_list[current_server_id] != inf):
                 server_endpoints.append([endpoint_id, servers_list[current_server_id]])
 
     return server_endpoints
@@ -94,3 +94,13 @@ def solver(data):
                 break
         sortie += [sortie_i]
     return (sortie)
+
+if __name__ == "__main__":
+    import extract
+    import solver
+
+    data = extract.extract("kittens")
+
+    sortie = solver(data)
+    print
+    sortie

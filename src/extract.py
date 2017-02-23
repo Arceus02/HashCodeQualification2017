@@ -1,6 +1,6 @@
 import math
 
-names = ["test", "kittens", "me_at_the_zoo", "trending_today", "videos_worth_spreading"]
+names = ["test", "me_at_the_zoo", "trending_today", "videos_worth_spreading", "kittens"]
 
 def get_path(name):
     return "../input/" + name + ".in"
