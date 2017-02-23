@@ -1,0 +1,5 @@
+V E R C X
+S0 S1 ... SV-1 # videos size
+LD K #endpoint0 l1/2
+c LC #endpoint0 l2/2
+Rv Re Rn # requested video
