@@ -1,9 +1,12 @@
 import math
 
-files_path = ["../input/kittens.in", "../input/me_at_the_zoo.in", "../input/trending_today.in", "../input/videos_worth_spreading.in"]
+names = ["test", "kittens", "me_at_the_zoo", "trending_today", "videos_worth_spreading"]
 
-def extract(path):
-    with open(path, 'r') as file:
+def get_path(name):
+    return "../input/" + name + ".in"
+
+def extract(name):
+    with open(get_path(name), 'r') as file:
         lines = file.readlines()
         data0 = [int(item) for item in lines[0].split(" ")]
         n_videos = data0[0]
@@ -30,11 +33,11 @@ def extract(path):
             video_id = data_request[0]
             endpoint_id = data_request[1]
             amount = data_request[2]
-            requests[video_id][endpoint_id] = amount
+            requests[video_id][endpoint_id] += amount
 
     return n_videos, n_endpoints, n_requests, n_servers, server_space, video_sizes, endpoints, requests
 
 if __name__ == "__main__":
-    data = list(extract("../input/test.in"))
+    data = list(extract(names[0]))
     for k in data:
         print(k)
