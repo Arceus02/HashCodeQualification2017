@@ -5,21 +5,30 @@ def solver_endpoints(path):
     n_videos, n_endpoints, n_requests, n_servers, server_space, video_sizes, endpoints, requests = extract.extract(path)
     condition_arret = False
     videos_sorted = sort_videos_by_request(requests)  # pour chaque endpoint, liste des videos par ordre de requests maximal
-    server_sorted_by_latence=sort_endpoints_by_latency(endpoints)
+    server_sorted_by_latence = sort_endpoints_by_latency(endpoints)  # pour chaque endpoint, liste des servers classes par ordre de latence min
+    add_list=[1 for i in range(endpoints)] #pour chaque endpoint, 1 si on a ajoute une video ce tour ci, 0 sinon
+    #condition d'arret : tout vaut 0, on n'a rien ajoute
 
-    while not condition_arret:
+    while sum (add_list)!=0:
         for i in range len(endpoints):
-            add_done=False
-            serv_min = serv_latence_min(i)  # serveur de latence minimale par rapport au endpoint i
-            if serv_min != -1: #serv_min =-1 s'il n'y a pas de serveur connecte a ce endpoint
+            add_done = False
+            while not add_done and server_sorted_by_latence[i] != []:
+                serv_min = server_sorted_by_latence[i][0]  # serveur de latence minimale par rapport au endpoint i
                 j = 0  # tentatives d'ajout
-                while j < 4 and not add_done: #4 tentatives max avant de passer au serveur suivant
-                    if videos_sorted[i][j] not in serv_min_vids:  # video avec le plus de requetes pour l'endpoint i
-                        ajouter_vid(serv_min)  # n'ajoute pas si ca depasse la taille du serveur
+                while j < 4 and not add_done:  # 4 tentatives max avant de passer au serveur suivant
+                    if videos_sorted[i][j] not in output_list[serv_min]:  # video avec le plus de requetes pour l'endpoint i, si elle n'y est pas
+                        add_video(output_list,serv_min,j)  # n'ajoute pas si ca depasse la taille du serveur ou si elle y est deja
                         add_done = True
-                        delete_vid[i][j]  # on supprime la video de la liste des plus populaires vu qu'elle est accessible
+                        delete_video(videos_sorted,i,j)  # on supprime la video de la liste des plus populaires vu qu'elle est accessible
                     else:
                         j += 1  # on tente d'inserer la video du rang d'apres
+                if not add_done:
+                    delete_server(server_sorted_by_latence, i)  # on supprime le serveur des accessibles
+            if not add_done:
+                add_list[i]=0
+            else:
+                add_list[i]=1
+
 
 def sort_videos_by_request(requests):
     result = []
